@@ -11,6 +11,19 @@ const app = {
         this.bindEvents();
         // Setup initial date
         this.updateDate();
+        // Ping API to verify backend connection
+        this.checkApiHealth();
+    },
+    
+    async checkApiHealth() {
+        try {
+            console.log('Pinging backend API...');
+            const response = await fetch('/api/health');
+            const data = await response.json();
+            console.log('✅ Backend API is online:', data);
+        } catch (error) {
+            console.warn('⚠️ Backend API is not reachable yet (or running locally without vercel dev):', error);
+        }
     },
     
     bindEvents() {
