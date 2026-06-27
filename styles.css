@@ -1105,3 +1105,99 @@ input:focus {
     font-weight: 700;
 }
 
+/* ==========================================================================
+   SCHEDULE & APPOINTMENTS
+   ========================================================================== */
+
+.date-strip {
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+    padding: 10px 0 20px 0;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+}
+.date-strip::-webkit-scrollbar { display: none; }
+
+.date-chip {
+    flex: 0 0 auto;
+    width: 60px;
+    height: 75px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+.date-chip:hover { border-color: var(--primary-light); background: var(--bg-base); }
+.date-chip.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+}
+.date-chip .day-name { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; margin-bottom: 4px; }
+.date-chip .day-num { font-size: 1.25rem; font-weight: 700; }
+.date-chip.active .day-name { color: rgba(255,255,255,0.9); }
+
+.schedule-day-header {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--secondary);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.appointment-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    border-left: 4px solid var(--primary);
+    position: relative;
+}
+.appt-time-col {
+    flex: 0 0 60px;
+    text-align: center;
+    border-right: 1px solid #e2e8f0;
+    padding-right: 12px;
+}
+.appt-time { font-weight: 700; color: var(--secondary); font-size: 0.9rem; }
+.appt-body { flex: 1; min-width: 0; }
+.appt-body h4 { margin: 0 0 4px 0; font-size: 1rem; }
+.appt-body p { margin: 0; font-size: 0.85rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.appt-badge {
+    position: absolute;
+    top: 16px;
+    right: 48px;
+    font-size: 0.7rem;
+    padding: 4px 8px;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.appt-primary { background: var(--primary-light); color: var(--primary-dark); }
+.appt-warning { background: var(--warning-bg); color: #b45309; }
+.appt-info    { background: var(--info-bg); color: #1d4ed8; }
+.appt-danger  { background: var(--danger-bg); color: #b91c1c; }
+.appt-success { background: var(--success-bg); color: #047857; border-left-color: var(--success) !important; }
+
+.appt-delete-btn {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    background: transparent;
+    border-radius: 50%;
+}
+.appt-delete-btn:hover { background: var(--danger-bg); }
+

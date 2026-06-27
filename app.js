@@ -66,12 +66,13 @@ const app = {
         // On-navigate side effects
         if (screenId === 'dashboard') this.loadDashboard();
         if (screenId === 'patients')  this.loadAllPatients();
+        if (screenId === 'schedule')  this.loadSchedule();
         if (screenId === 'billing' && this.currentPatient) this.setupBilling();
     },
 
     syncBottomNav(screenId) {
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        const map = { dashboard: 'nav-home', patients: 'nav-patients', registration: 'nav-patients', record: 'nav-patients', billing: 'nav-billing' };
+        const map = { dashboard: 'nav-home', patients: 'nav-patients', registration: 'nav-patients', record: 'nav-patients', billing: 'nav-billing', schedule: 'nav-schedule' };
         const target = document.getElementById(map[screenId]);
         if (target) target.classList.add('active');
     },
@@ -132,12 +133,12 @@ const app = {
         // --- BOTTOM NAV ---
         document.getElementById('nav-home').addEventListener('click', e => { e.preventDefault(); this.navigate('dashboard'); });
         document.getElementById('nav-patients').addEventListener('click', e => { e.preventDefault(); this.navigate('patients'); });
-        document.getElementById('nav-schedule').addEventListener('click', e => { e.preventDefault(); this.toast('Appointments module coming soon!', 'success'); });
+        document.getElementById('nav-schedule').addEventListener('click', e => { e.preventDefault(); this.navigate('schedule'); });
         document.getElementById('nav-billing').addEventListener('click', e => { e.preventDefault(); this.navigate('billing'); });
 
         // --- DASHBOARD QUICK ACTIONS ---
         document.getElementById('qa-new-patient').addEventListener('click', () => this.navigate('registration'));
-        document.getElementById('qa-new-appoint').addEventListener('click', () => this.toast('Appointments module coming soon!', 'success'));
+        document.getElementById('qa-new-appoint').addEventListener('click', () => { this.navigate('schedule'); setTimeout(() => this.openAppointModal(), 450); });
         document.getElementById('qa-billing').addEventListener('click', () => {
             if (!this.currentPatient) { this.toast('Select a patient first.', 'error'); this.navigate('patients'); return; }
             this.navigate('billing');
@@ -149,6 +150,12 @@ const app = {
         document.getElementById('patients-back-btn').addEventListener('click', () => this.navigate('dashboard'));
         document.getElementById('patients-add-btn').addEventListener('click', () => this.navigate('registration'));
         document.getElementById('patient-search').addEventListener('input', e => this.filterPatients(e.target.value));
+
+        // --- SCHEDULE ---
+        document.getElementById('schedule-back-btn').addEventListener('click', () => this.navigate('dashboard'));
+        document.getElementById('schedule-add-btn').addEventListener('click', () => this.openAppointModal());
+        document.getElementById('appt-cancel-btn').addEventListener('click', () => this.closeAppointModal());
+        document.getElementById('appt-save-btn').addEventListener('click', () => this.saveAppointment());
 
         // --- REGISTRATION ---
         document.getElementById('reg-back-btn').addEventListener('click', () => this.navigate('dashboard'));
@@ -191,6 +198,155 @@ const app = {
         // --- SERVICE MODAL ---
         document.getElementById('svc-cancel-btn').addEventListener('click', () => this.closeServiceModal());
         document.getElementById('svc-add-btn').addEventListener('click', () => this.addService());
+    },
+
+    // ── SCHEDULE ──────────────────────────────────────────────
+    _selectedDate: null,
+    _allAppointments: [],
+
+    async loadSchedule() {
+        this._selectedDate = new Date().toISOString().split('T')[0];
+        this.renderDateStrip();
+        await this.fetchAppointmentsForDate(this._selectedDate);
+        // Pre-fill patients datalist
+        const patients = await this.api('GET', '/api/patients');
+        const dl = document.getElementById('appt-patients-list');
+        if (dl && patients) {
+            dl.innerHTML = patients.map(p => `<option value="${p.fullName}" data-id="${p.id}">`).join('');
+        }
+    },
+
+    renderDateStrip() {
+        const strip = document.getElementById('date-strip');
+        const today = new Date();
+        let html = '';
+        for (let i = -1; i <= 5; i++) {
+            const d = new Date(today);
+            d.setDate(today.getDate() + i);
+            const iso  = d.toISOString().split('T')[0];
+            const day  = d.toLocaleDateString('en-US', { weekday: 'short' });
+            const date = d.getDate();
+            const active = iso === this._selectedDate ? 'active' : '';
+            html += `<button class="date-chip ${active}" data-date="${iso}">
+                        <span class="day-name">${day}</span>
+                        <span class="day-num">${date}</span>
+                     </button>`;
+        }
+        strip.innerHTML = html;
+        strip.querySelectorAll('.date-chip').forEach(chip => {
+            chip.addEventListener('click', async () => {
+                this._selectedDate = chip.dataset.date;
+                strip.querySelectorAll('.date-chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                const label = document.getElementById('schedule-day-label');
+                label.textContent = chip.dataset.date === new Date().toISOString().split('T')[0]
+                    ? "Today's Appointments"
+                    : `Appointments — ${chip.dataset.date}`;
+                await this.fetchAppointmentsForDate(this._selectedDate);
+            });
+        });
+    },
+
+    async fetchAppointmentsForDate(date) {
+        const data = await this.api('GET', `/api/appointments?date=${date}`);
+        this._allAppointments = data || [];
+        const container = document.getElementById('appointments-container');
+        if (!data || data.length === 0) {
+            container.innerHTML = `<div class="empty-state"><i class="fa-regular fa-calendar-xmark"></i><p>No appointments for this day.<br>Tap + to book one.</p></div>`;
+            return;
+        }
+        const typeColors = { consultation: 'primary', 'follow-up': 'warning', lab: 'info', procedure: 'danger', other: 'success' };
+        container.innerHTML = data.map(a => {
+            const color = typeColors[a.type] || 'primary';
+            return `<div class="appointment-card glass-panel" data-id="${a.id}">
+                <div class="appt-time-col">
+                    <span class="appt-time">${a.time || '--:--'}</span>
+                </div>
+                <div class="appt-body">
+                    <h4>${a.patientName}</h4>
+                    <p>${a.reason || a.type}</p>
+                </div>
+                <span class="appt-badge appt-${color}">${a.type}</span>
+                <button class="icon-btn appt-delete-btn" data-id="${a.id}" title="Cancel">
+                    <i class="fa-solid fa-xmark" style="color:var(--danger);"></i>
+                </button>
+            </div>`;
+        }).join('');
+
+        container.querySelectorAll('.appt-delete-btn').forEach(btn => {
+            btn.addEventListener('click', async e => {
+                e.stopPropagation();
+                const id = btn.dataset.id;
+                await this.api('DELETE', `/api/appointments/${id}`);
+                this.toast('Appointment cancelled.', 'success');
+                await this.fetchAppointmentsForDate(this._selectedDate);
+                await this.loadDashboardStats();
+            });
+        });
+    },
+
+    openAppointModal() {
+        // Set default date to selected date
+        document.getElementById('appt-date').value = this._selectedDate || new Date().toISOString().split('T')[0];
+        document.getElementById('appt-time').value = '';
+        document.getElementById('appt-patient').value = '';
+        document.getElementById('appt-reason').value = '';
+        document.getElementById('appt-type').value = 'consultation';
+        const modal = document.getElementById('appoint-modal');
+        modal.classList.remove('hidden');
+        requestAnimationFrame(() => modal.classList.add('active'));
+        document.getElementById('appt-patient').focus();
+    },
+
+    closeAppointModal() {
+        const modal = document.getElementById('appoint-modal');
+        modal.classList.remove('active');
+        setTimeout(() => modal.classList.add('hidden'), 200);
+    },
+
+    async saveAppointment() {
+        const patientName = document.getElementById('appt-patient').value.trim();
+        const date        = document.getElementById('appt-date').value;
+        const time        = document.getElementById('appt-time').value;
+        if (!patientName || !date || !time) {
+            this.toast('Patient name, date and time are required.', 'error');
+            return;
+        }
+        const btn = document.getElementById('appt-save-btn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Booking…';
+
+        const data = await this.api('POST', '/api/appointments', {
+            patientName,
+            date,
+            time,
+            reason: document.getElementById('appt-reason').value.trim(),
+            type:   document.getElementById('appt-type').value
+        });
+
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Book';
+
+        if (data?.success) {
+            this.toast(`Appointment booked for ${patientName}!`, 'success');
+            this.closeAppointModal();
+            if (this._selectedDate === date) {
+                await this.fetchAppointmentsForDate(date);
+            } else {
+                this._selectedDate = date;
+                this.renderDateStrip();
+                await this.fetchAppointmentsForDate(date);
+            }
+        } else {
+            this.toast('Failed to book appointment.', 'error');
+        }
+    },
+
+    async loadDashboardStats() {
+        const stats = await this.api('GET', '/api/stats');
+        if (!stats) return;
+        const el = document.getElementById('stat-appointments');
+        if (el) el.textContent = stats.appointments ?? 0;
     },
 
     // ── DASHBOARD ─────────────────────────────────────────────

@@ -5,8 +5,8 @@
 
 // In-memory store — completely empty on first load
 const db = {
-    patients: [],   // { id, fullName, phone, idPassport, dob, gender, address, accessibility, emergencyContact, healthSummary, visits, medications }
-    bills: [],      // { id, patientId, services, total, status, paymentMethod, createdAt }
+    patients: [],
+    bills: [],
     appointments: [],
     stats: {
         appointments: 0,
@@ -17,6 +17,7 @@ const db = {
 
 let patientCounter = 1000;
 let billCounter = 2000;
+let appointCounter = 3000;
 
 // ---- helpers ----
 function cors(res) {
@@ -174,6 +175,48 @@ export default async function handler(req, res) {
                 bill.paymentMethod = 'cash';
             }
             return json(res, 200, { success: true, message: 'Cash payment recorded.' });
+        }
+
+        // ── GET /api/appointments ────────────────────────────────
+        if (url.match(/\/api\/appointments$/) && method === 'GET') {
+            const dateFilter = new URL(url, 'http://x').searchParams.get('date');
+            const results = dateFilter
+                ? db.appointments.filter(a => a.date === dateFilter)
+                : db.appointments;
+            // Sort by time
+            return json(res, 200, results.sort((a,b) => (a.time > b.time ? 1 : -1)));
+        }
+
+        // ── POST /api/appointments ───────────────────────────────
+        if (url.match(/\/api\/appointments$/) && method === 'POST') {
+            appointCounter++;
+            const appt = {
+                id: `A-${appointCounter}`,
+                patientName: body.patientName || '',
+                patientId:   body.patientId   || '',
+                date:        body.date        || '',
+                time:        body.time        || '',
+                reason:      body.reason      || '',
+                type:        body.type        || 'consultation',
+                status:      'scheduled',
+                createdAt:   new Date().toISOString()
+            };
+            db.appointments.push(appt);
+            return json(res, 201, { success: true, appointment: appt });
+        }
+
+        // ── PATCH /api/appointments/:id ──────────────────────────
+        const apptMatch = url.match(/\/api\/appointments\/([^/?]+)/);
+        if (apptMatch && (method === 'PATCH' || method === 'DELETE')) {
+            const id = apptMatch[1];
+            const idx = db.appointments.findIndex(a => a.id === id);
+            if (idx === -1) return json(res, 404, { error: 'Appointment not found' });
+            if (method === 'DELETE') {
+                db.appointments.splice(idx, 1);
+                return json(res, 200, { success: true });
+            }
+            db.appointments[idx] = { ...db.appointments[idx], ...body };
+            return json(res, 200, { success: true, appointment: db.appointments[idx] });
         }
 
         return json(res, 404, { error: `Route not found: ${method} ${url}` });

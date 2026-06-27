@@ -441,6 +441,69 @@
     </div>
 </div>
 
+
+<!-- ========== SCREEN 7: SCHEDULE ========== -->
+<section id="screen-schedule" class="screen hidden sub-screen">
+    <header class="app-header glass-header back-header">
+        <button class="icon-btn back-btn" id="schedule-back-btn"><i class="fa-solid fa-arrow-left"></i></button>
+        <h2><i class="fa-solid fa-calendar-days" style="color:var(--primary)"></i> Schedule</h2>
+        <button class="icon-btn" id="schedule-add-btn" title="New Appointment"><i class="fa-solid fa-plus"></i></button>
+    </header>
+    <div class="scrollable-content">
+        <!-- Date strip -->
+        <div class="date-strip" id="date-strip"></div>
+        <!-- Appointments for selected day -->
+        <div class="schedule-day-header" id="schedule-day-label">Today's Appointments</div>
+        <div id="appointments-container">
+            <div class="empty-state">
+                <i class="fa-regular fa-calendar-xmark"></i>
+                <p>No appointments scheduled.<br>Tap + to book one.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- New Appointment Modal -->
+<div id="appoint-modal" class="modal-overlay hidden">
+    <div class="modal-card" style="text-align:left;max-width:400px;">
+        <h3 style="margin-bottom:16px;"><i class="fa-solid fa-calendar-plus" style="color:var(--primary);"></i> New Appointment</h3>
+        <div class="input-group">
+            <label for="appt-patient">Patient Name *</label>
+            <input type="text" id="appt-patient" placeholder="e.g. Jane Ochieng" list="appt-patients-list">
+            <datalist id="appt-patients-list"></datalist>
+        </div>
+        <div class="input-row">
+            <div class="input-group">
+                <label for="appt-date">Date *</label>
+                <input type="date" id="appt-date">
+            </div>
+            <div class="input-group">
+                <label for="appt-time">Time *</label>
+                <input type="time" id="appt-time">
+            </div>
+        </div>
+        <div class="input-group">
+            <label for="appt-reason">Reason / Notes</label>
+            <input type="text" id="appt-reason" placeholder="e.g. Routine check-up">
+        </div>
+        <div class="input-group">
+            <label for="appt-type">Type</label>
+            <select id="appt-type" class="minimal-select" style="width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font-size:1rem;">
+                <option value="consultation">Consultation</option>
+                <option value="follow-up">Follow-up</option>
+                <option value="lab">Lab Test</option>
+                <option value="procedure">Procedure</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+        <div class="action-footer" style="padding:0;margin-top:16px;">
+            <button class="btn btn-outline" id="appt-cancel-btn">Cancel</button>
+            <button class="btn btn-primary" id="appt-save-btn"><i class="fa-solid fa-floppy-disk"></i> Book</button>
+        </div>
+    </div>
+</div>
+
 <script src="app.js"></script>
+
 </body>
 </html>
