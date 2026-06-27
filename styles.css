@@ -595,14 +595,21 @@ input:focus {
 .system-status {
     margin-top: var(--spacing-lg);
     display: flex;
-    justify-content: space-between;
-    font-size: 0.85rem;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 0.9rem;
     color: var(--text-muted);
 }
 .status-item {
     display: flex;
     align-items: center;
-    gap: 6px;
+    justify-content: space-between;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    gap: 8px;
+    font-weight: 500;
 }
 
 .footer-credits {
