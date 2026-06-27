@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Medi Bloom - Clinic Management</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        
+        <!-- ==============================
+             SCREEN 1: LOGIN 
+             ============================== -->
+        <section id="screen-login" class="screen active">
+            <div class="login-wrapper">
+                <div class="logo-container">
+                    <div class="logo-icon"><i class="fa-solid fa-house-medical"></i></div>
+                    <h1>MEDI BLOOM</h1>
+                    <p class="subtitle">Clinic Management System</p>
+                </div>
+                
+                <div class="login-card glass-panel">
+                    <form id="login-form">
+                        <div class="input-group">
+                            <label for="phone-input">Phone Number</label>
+                            <div class="phone-input-wrapper">
+                                <span class="country-code">+254</span>
+                                <input type="tel" id="phone-input" placeholder="712 345678" pattern="[0-9 ]+" required autocomplete="off">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-large btn-block">
+                            <i class="fa-solid fa-shield-halved"></i> Send OTP
+                        </button>
+                    </form>
+                    
+                    <div class="system-status">
+                        <div class="status-item offline-status">
+                            <i class="fa-solid fa-wifi"></i> Offline Mode: <span class="status-badge success">ON <i class="fa-solid fa-check"></i></span>
+                        </div>
+                        <div class="status-item language-select">
+                            <i class="fa-solid fa-earth-africa"></i> Language: 
+                            <select class="minimal-select">
+                                <option>ENG</option>
+                                <option>SWA</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer-credits">
+                    Built with <i class="fa-solid fa-wheelchair"></i> by Solian Wolves
+                </div>
+            </div>
+        </section>
+
+        <!-- ==============================
+             SCREEN 2: DASHBOARD
+             ============================== -->
+        <section id="screen-dashboard" class="screen hidden">
+            <header class="app-header glass-header">
+                <div class="header-titles">
+                    <h2><span class="wave">👋</span> Hello, Dr. Mwangi</h2>
+                    <p class="date-text"><i class="fa-regular fa-calendar"></i> Today: Tue, 15 Aug 2025</p>
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn logout-btn" onclick="app.navigate('login')" title="Log Out"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+                </div>
+            </header>
+            
+            <div class="scrollable-content pb-nav">
+                <!-- Snapshot Card -->
+                <div class="dashboard-section mt-3">
+                    <div class="snapshot-card glass-panel">
+                        <h3 class="section-title text-sm"><i class="fa-solid fa-chart-pie"></i> TODAY'S SNAPSHOT</h3>
+                        <div class="snapshot-grid">
+                            <div class="stat-item">
+                                <div class="stat-icon text-primary"><i class="fa-solid fa-users-medical"></i></div>
+                                <div>
+                                    <div class="stat-label">Patients</div>
+                                    <div class="stat-value">24</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon text-info"><i class="fa-regular fa-clock"></i></div>
+                                <div>
+                                    <div class="stat-label">Appointments</div>
+                                    <div class="stat-value">8</div>
+                                </div>
+                            </div>
+                            <div class="stat-item stat-revenue">
+                                <div class="stat-icon text-success"><i class="fa-solid fa-sack-dollar"></i></div>
+                                <div>
+                                    <div class="stat-label">Revenue</div>
+                                    <div class="stat-value text-success">KES 12,400</div>
+                                </div>
+                            </div>
+                            <div class="stat-item stat-alert">
+                                <div class="stat-icon text-danger"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                                <div>
+                                    <div class="stat-label">Pending Bills</div>
+                                    <div class="stat-value text-danger">3</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="dashboard-section">
+                    <h3 class="section-title"><i class="fa-solid fa-bolt"></i> QUICK ACTIONS</h3>
+                    <div class="quick-actions-grid">
+                        <button class="action-card" onclick="app.navigate('registration')">
+                            <div class="action-icon primary-bg"><i class="fa-solid fa-user-plus"></i></div>
+                            <span>+ Patient</span>
+                        </button>
+                        <button class="action-card">
+                            <div class="action-icon info-bg"><i class="fa-solid fa-calendar-plus"></i></div>
+                            <span>+ Appoint</span>
+                        </button>
+                        <button class="action-card" onclick="app.navigate('billing')">
+                            <div class="action-icon success-bg"><i class="fa-solid fa-credit-card"></i></div>
+                            <span>Bill</span>
+                        </button>
+                        <button class="action-card">
+                            <div class="action-icon warning-bg"><i class="fa-solid fa-pills"></i></div>
+                            <span>Stock</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Alerts -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h3 class="section-title"><i class="fa-solid fa-bell"></i> ALERTS (3)</h3>
+                    </div>
+                    <div class="alerts-list">
+                        <div class="alert-item alert-danger glass-panel">
+                            <div class="alert-icon">🔴</div>
+                            <div class="alert-content">Paracetamol LOW in pharmacy</div>
+                        </div>
+                        <div class="alert-item alert-warning glass-panel" onclick="app.navigate('record')" style="cursor:pointer;">
+                            <div class="alert-icon">🟡</div>
+                            <div class="alert-content">Jane O. follow-up appointment in 30 mins</div>
+                        </div>
+                        <div class="alert-item alert-success glass-panel">
+                            <div class="alert-icon">🟢</div>
+                            <div class="alert-content">2 new payments received</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Navigation -->
+            <nav class="bottom-nav glass-nav">
+                <a href="#" class="nav-item active"><i class="fa-solid fa-house"></i><span>Home</span></a>
+                <a href="#" class="nav-item" onclick="app.navigate('registration')"><i class="fa-solid fa-users"></i><span>Patients</span></a>
+                <a href="#" class="nav-item"><i class="fa-solid fa-calendar-days"></i><span>Schedule</span></a>
+                <a href="#" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i><span>Billing</span></a>
+            </nav>
+        </section>
+
+        <!-- ==============================
+             SCREEN 3: PATIENT REGISTRATION
+             ============================== -->
+        <section id="screen-registration" class="screen hidden sub-screen">
+            <header class="app-header glass-header back-header">
+                <button class="icon-btn back-btn" onclick="app.navigate('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+                <h2>+ New Patient</h2>
+            </header>
+            
+            <div class="scrollable-content pb-action">
+                <form class="registration-form">
+                    <div class="form-section">
+                        <h3 class="section-title text-sm">PERSONAL DETAILS</h3>
+                        <div class="form-card glass-panel">
+                            <div class="input-group">
+                                <label>Full Name</label>
+                                <input type="text" placeholder="e.g. Jane Akinyi Ochieng" value="Jane Akinyi Ochieng">
+                            </div>
+                            
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label>Phone</label>
+                                    <input type="tel" value="0712 345678">
+                                </div>
+                                <div class="input-group">
+                                    <label>ID/Passport</label>
+                                    <input type="text" value="AB12345">
+                                </div>
+                            </div>
+                            
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label>Date of Birth</label>
+                                    <input type="text" placeholder="DD/MM/YYYY" value="15/03/1990">
+                                </div>
+                                <div class="input-group">
+                                    <label>Gender</label>
+                                    <div class="radio-group compact">
+                                        <label class="radio-label"><input type="radio" name="gender" value="F" checked> <span class="radio-btn">F</span></label>
+                                        <label class="radio-label"><input type="radio" name="gender" value="M"> <span class="radio-btn">M</span></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="section-title text-sm"><i class="fa-solid fa-house"></i> ADDRESS</h3>
+                        <div class="form-card glass-panel">
+                            <div class="input-group">
+                                <label>Estate/Village</label>
+                                <input type="text" value="Kibera, Soweto East">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="section-title text-sm"><i class="fa-brands fa-accessible-icon"></i> ACCESSIBILITY NEEDS</h3>
+                        <div class="form-card glass-panel">
+                            <div class="checkbox-grid">
+                                <label class="checkbox-label"><input type="radio" name="acc" value="none"> <span class="radio-btn">None</span></label>
+                                <label class="checkbox-label"><input type="radio" name="acc" value="wheelchair" checked> <span class="radio-btn">Wheelchair</span></label>
+                                <label class="checkbox-label"><input type="radio" name="acc" value="visual"> <span class="radio-btn">Visual</span></label>
+                                <label class="checkbox-label"><input type="radio" name="acc" value="hearing"> <span class="radio-btn">Hearing</span></label>
+                            </div>
+                            <div class="input-group mt-3">
+                                <input type="text" placeholder="Other needs...">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="section-title text-sm"><i class="fa-solid fa-users-viewfinder"></i> EMERGENCY CONTACT</h3>
+                        <div class="form-card glass-panel">
+                            <div class="input-group">
+                                <label>Name</label>
+                                <input type="text" value="Peter Ochieng">
+                            </div>
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label>Phone</label>
+                                    <input type="tel" value="0723 456789">
+                                </div>
+                                <div class="input-group">
+                                    <label>Relation</label>
+                                    <input type="text" value="Husband">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="action-footer glass-footer">
+                <button class="btn btn-outline" onclick="app.navigate('dashboard')">Cancel</button>
+                <button class="btn btn-primary" onclick="app.navigate('record')"><i class="fa-solid fa-floppy-disk"></i> Save Offline</button>
+            </div>
+        </section>
+
+        <!-- ==============================
+             SCREEN 4: PATIENT RECORD
+             ============================== -->
+        <section id="screen-record" class="screen hidden sub-screen">
+            <header class="app-header glass-header back-header">
+                <button class="icon-btn back-btn" onclick="app.navigate('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
+                <div class="patient-header-info">
+                    <h2>👤 Jane Ochieng <span class="badge-tag">#P-1024</span></h2>
+                    <p class="subtitle">Age: 35 | Last Visit: 2 days ago</p>
+                </div>
+            </header>
+            
+            <div class="scrollable-content pb-action">
+                
+                <div class="record-section mt-3">
+                    <h3 class="section-title">📋 HEALTH SUMMARY</h3>
+                    <div class="summary-card glass-panel">
+                        <ul class="key-value-list">
+                            <li><span class="key">Condition:</span> <span class="value text-warning fw-bold">Hypertension</span></li>
+                            <li><span class="key">Medication:</span> <span class="value">Amlodipine</span></li>
+                            <li><span class="key">Allergies:</span> <span class="value text-success">None</span></li>
+                            <li><span class="key">Next Visit:</span> <span class="value">14 days</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="record-section">
+                    <h3 class="section-title">📅 VISIT HISTORY</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-marker active"></div>
+                            <div class="timeline-content glass-panel">
+                                <div class="timeline-header">
+                                    <h4>10 Aug 2025</h4>
+                                </div>
+                                <div class="visit-details">
+                                    <p><strong>BP:</strong> 140/90 &nbsp;|&nbsp; <strong>Weight:</strong> 68kg</p>
+                                    <p><strong>Dx:</strong> Hypertension</p>
+                                    <p><strong>Rx:</strong> Amlodipine 5mg</p>
+                                </div>
+                                <button class="btn-text">View Details <i class="fa-solid fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content glass-panel">
+                                <div class="timeline-header">
+                                    <h4>03 Jul 2025</h4>
+                                </div>
+                                <div class="visit-details">
+                                    <p>Routine check-up</p>
+                                </div>
+                                <button class="btn-text">View Details <i class="fa-solid fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="record-section">
+                    <h3 class="section-title">💊 CURRENT MEDICATIONS</h3>
+                    <div class="meds-list glass-panel">
+                        <div class="med-item">
+                            <div class="med-icon"><i class="fa-solid fa-capsules"></i></div>
+                            <div class="med-info">
+                                <h4>Amlodipine 5mg</h4>
+                                <p>1x daily (Morning)</p>
+                            </div>
+                        </div>
+                        <div class="med-item">
+                            <div class="med-icon"><i class="fa-solid fa-tablets"></i></div>
+                            <div class="med-info">
+                                <h4>Metformin 500mg</h4>
+                                <p>2x daily (After meals)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="action-footer multi-action glass-footer">
+                <button class="btn btn-outline btn-icon-stack"><i class="fa-solid fa-comment-sms"></i><span>SMS Remind</span></button>
+                <button class="btn btn-outline btn-icon-stack"><i class="fa-solid fa-print"></i><span>Print Summary</span></button>
+                <button class="btn btn-primary btn-grow" onclick="app.navigate('billing')"><i class="fa-solid fa-plus"></i> New Visit</button>
+            </div>
+        </section>
+
+        <!-- ==============================
+             SCREEN 5: BILLING + M-PESA
+             ============================== -->
+        <section id="screen-billing" class="screen hidden sub-screen">
+            <header class="app-header glass-header back-header">
+                <button class="icon-btn back-btn" onclick="app.navigate('record')"><i class="fa-solid fa-arrow-left"></i></button>
+                <div class="patient-header-info">
+                    <h2>💰 Bill <span class="badge-tag highlight">#B-2048</span></h2>
+                    <p class="subtitle">Patient: Jane Ochieng</p>
+                </div>
+            </header>
+            
+            <div class="scrollable-content pb-nav">
+                
+                <div class="billing-section mt-3">
+                    <h3 class="section-title">SERVICES</h3>
+                    <div class="invoice-card glass-panel">
+                        <ul class="invoice-items">
+                            <li><span>Consultation</span> <span>500</span></li>
+                            <li><span>BP Check</span> <span>200</span></li>
+                            <li><span>Lab Test (Glucose)</span> <span>800</span></li>
+                            <li><span>Medication</span> <span>300</span></li>
+                        </ul>
+                        <div class="invoice-total">
+                            <span>TOTAL:</span>
+                            <span class="total-amount">KES 1,800</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="billing-section">
+                    <h3 class="section-title">PAYMENT METHOD</h3>
+                    
+                    <div class="payment-method mpesa-method glass-panel active">
+                        <div class="method-header">
+                            <h4><i class="fa-solid fa-mobile-screen-button"></i> Pay via M-Pesa</h4>
+                            <span class="mpesa-logo">M-PESA</span>
+                        </div>
+                        <div class="method-body">
+                            <p class="instruction">STK Push to:</p>
+                            <div class="phone-display">0712 345678</div>
+                            <button class="btn btn-mpesa btn-block mt-3" onclick="app.simulateMpesa()"><i class="fa-solid fa-paper-plane"></i> Send Request</button>
+                        </div>
+                    </div>
+                    
+                    <div class="divider-text"><span>OR</span></div>
+                    
+                    <div class="payment-method cash-method glass-panel">
+                        <div class="method-header">
+                            <h4><i class="fa-solid fa-money-bill-wave"></i> Cash Received</h4>
+                        </div>
+                        <div class="method-body">
+                            <div class="input-group">
+                                <label>Amount Rendered</label>
+                                <div class="prefix-input">
+                                    <span class="prefix">KES</span>
+                                    <input type="number" placeholder="Enter amount..." value="1800">
+                                </div>
+                            </div>
+                            <button class="btn btn-outline btn-block mt-3">Confirm Payment</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="secondary-actions mt-4">
+                    <button class="btn btn-text"><i class="fa-solid fa-hourglass-half"></i> Pay Later</button>
+                    <button class="btn btn-text"><i class="fa-solid fa-receipt"></i> Email/Print Receipt</button>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+
+    <!-- M-PESA Simulation Modal -->
+    <div id="mpesa-modal" class="modal-overlay hidden">
+        <div class="modal-card mpesa-modal-content">
+            <div class="spinner-container">
+                <div class="spinner"></div>
+            </div>
+            <h3>Waiting for Payment...</h3>
+            <p>Patient is entering PIN on their phone.</p>
+            <button class="btn btn-outline btn-block mt-4" onclick="app.closeMpesaModal()">Cancel</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
