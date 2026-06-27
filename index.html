@@ -85,28 +85,28 @@
                                 <div class="stat-icon text-primary"><i class="fa-solid fa-users-medical"></i></div>
                                 <div>
                                     <div class="stat-label">Patients</div>
-                                    <div class="stat-value">24</div>
+                                    <div class="stat-value" id="stat-patients">-</div>
                                 </div>
                             </div>
                             <div class="stat-item">
                                 <div class="stat-icon text-info"><i class="fa-regular fa-clock"></i></div>
                                 <div>
                                     <div class="stat-label">Appointments</div>
-                                    <div class="stat-value">8</div>
+                                    <div class="stat-value" id="stat-appointments">-</div>
                                 </div>
                             </div>
                             <div class="stat-item stat-revenue">
                                 <div class="stat-icon text-success"><i class="fa-solid fa-sack-dollar"></i></div>
                                 <div>
                                     <div class="stat-label">Revenue</div>
-                                    <div class="stat-value text-success">KES 12,400</div>
+                                    <div class="stat-value text-success" id="stat-revenue">-</div>
                                 </div>
                             </div>
                             <div class="stat-item stat-alert">
                                 <div class="stat-icon text-danger"><i class="fa-solid fa-file-invoice-dollar"></i></div>
                                 <div>
                                     <div class="stat-label">Pending Bills</div>
-                                    <div class="stat-value text-danger">3</div>
+                                    <div class="stat-value text-danger" id="stat-pending">-</div>
                                 </div>
                             </div>
                         </div>
@@ -183,24 +183,24 @@
                         <div class="form-card glass-panel">
                             <div class="input-group">
                                 <label>Full Name</label>
-                                <input type="text" placeholder="e.g. Jane Akinyi Ochieng" value="Jane Akinyi Ochieng">
+                                <input type="text" id="reg-name" placeholder="e.g. Jane Akinyi Ochieng" required>
                             </div>
                             
                             <div class="input-row">
                                 <div class="input-group">
                                     <label>Phone</label>
-                                    <input type="tel" value="0712 345678">
+                                    <input type="tel" id="reg-phone" placeholder="0712 345678" required>
                                 </div>
                                 <div class="input-group">
                                     <label>ID/Passport</label>
-                                    <input type="text" value="AB12345">
+                                    <input type="text" id="reg-id" placeholder="AB12345" required>
                                 </div>
                             </div>
                             
                             <div class="input-row">
                                 <div class="input-group">
                                     <label>Date of Birth</label>
-                                    <input type="text" placeholder="DD/MM/YYYY" value="15/03/1990">
+                                    <input type="text" id="reg-dob" placeholder="DD/MM/YYYY">
                                 </div>
                                 <div class="input-group">
                                     <label>Gender</label>
@@ -218,7 +218,7 @@
                         <div class="form-card glass-panel">
                             <div class="input-group">
                                 <label>Estate/Village</label>
-                                <input type="text" value="Kibera, Soweto East">
+                                <input type="text" id="reg-address" placeholder="e.g. Kibera, Soweto East">
                             </div>
                         </div>
                     </div>
@@ -227,8 +227,8 @@
                         <h3 class="section-title text-sm"><i class="fa-brands fa-accessible-icon"></i> ACCESSIBILITY NEEDS</h3>
                         <div class="form-card glass-panel">
                             <div class="checkbox-grid">
-                                <label class="checkbox-label"><input type="radio" name="acc" value="none"> <span class="radio-btn">None</span></label>
-                                <label class="checkbox-label"><input type="radio" name="acc" value="wheelchair" checked> <span class="radio-btn">Wheelchair</span></label>
+                                <label class="checkbox-label"><input type="radio" name="acc" value="none" checked> <span class="radio-btn">None</span></label>
+                                <label class="checkbox-label"><input type="radio" name="acc" value="wheelchair"> <span class="radio-btn">Wheelchair</span></label>
                                 <label class="checkbox-label"><input type="radio" name="acc" value="visual"> <span class="radio-btn">Visual</span></label>
                                 <label class="checkbox-label"><input type="radio" name="acc" value="hearing"> <span class="radio-btn">Hearing</span></label>
                             </div>
@@ -243,16 +243,16 @@
                         <div class="form-card glass-panel">
                             <div class="input-group">
                                 <label>Name</label>
-                                <input type="text" value="Peter Ochieng">
+                                <input type="text" id="reg-emerg-name" placeholder="e.g. Peter Ochieng">
                             </div>
                             <div class="input-row">
                                 <div class="input-group">
                                     <label>Phone</label>
-                                    <input type="tel" value="0723 456789">
+                                    <input type="tel" id="reg-emerg-phone" placeholder="0723 456789">
                                 </div>
                                 <div class="input-group">
                                     <label>Relation</label>
-                                    <input type="text" value="Husband">
+                                    <input type="text" id="reg-emerg-rel" placeholder="e.g. Husband">
                                 </div>
                             </div>
                         </div>
