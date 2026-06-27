@@ -129,6 +129,20 @@ body {
     }
 
     /* Transform bottom nav into sidebar */
+    .desktop-logo-wrapper {
+        display: block;
+        padding: 20px;
+        text-align: center;
+        border-bottom: 1px solid rgba(241, 245, 249, 1);
+        margin-bottom: 16px;
+    }
+    
+    .app-logo-small {
+        width: 100%;
+        max-width: 180px;
+        display: inline-block;
+    }
+
     .bottom-nav {
         grid-area: nav;
         position: static;
@@ -561,6 +575,15 @@ input:focus {
     box-shadow: 0 12px 24px rgba(13, 148, 136, 0.25);
     transform: rotate(-5deg);
 }
+
+.app-logo {
+    width: 250px;
+    max-width: 90%;
+    margin: 0 auto;
+    display: block;
+    margin-bottom: var(--spacing-md);
+}
+
 .logo-container h1 { font-size: 2.2rem; letter-spacing: -0.5px; color: #0f172a; margin-bottom: 0; }
 
 .login-card {
@@ -724,6 +747,9 @@ input:focus {
     font-size: 0.75rem;
     font-weight: 600;
     transition: var(--transition-fast);
+}
+.desktop-logo-wrapper {
+    display: none;
 }
 .nav-item i { font-size: 1.4rem; margin-bottom: 2px; }
 .nav-item.active { color: var(--primary); }
